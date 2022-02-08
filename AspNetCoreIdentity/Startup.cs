@@ -1,4 +1,5 @@
 ﻿using AspNetCoreIdentity.Config;
+using KissLog.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,6 @@ namespace AspNetCoreIdentity
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddIdentityConfig(Configuration);
             services.AddAuthorizationConfig();
             services.ResolveDependencies();
@@ -49,6 +49,8 @@ namespace AspNetCoreIdentity
                 app.UseHsts();
             }
 
+            app.UseKissLogMiddleware();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
@@ -61,6 +63,8 @@ namespace AspNetCoreIdentity
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            KissLogConfig.RegisterKissLogListeners(Configuration);
         }
     }
 }
